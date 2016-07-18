@@ -25,22 +25,22 @@ public class MainActivity extends AppCompatActivity {
         mp5 = (MoneyProgress) findViewById(R.id.mp5);
         mp6 = (MoneyProgress) findViewById(R.id.mp6);
 
-        mp.setNumber(500,1000).start();
-        mp2.setNumber(300,1000).start();
-        mp3.setNumber(400,1000).start();
-        mp4.setNumber(600,1000).start();
-        mp5.setNumber(700,1000).start();
-        mp6.setNumber(800,1000).start();
+        mp.setNumber(500,1000);
+        mp2.setNumber(300,1000);
+        mp3.setNumber(400,1000);
+        mp4.setNumber(600,1000);
+        mp5.setNumber(700,1000);
+        mp6.setNumber(800,1000);
 
         ((Button)findViewById(R.id.bt)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mp.setNumber(500,1000).start();
-                mp2.setNumber(300,1000).start();
-                mp3.setNumber(400,1000).start();
-                mp4.setNumber(600,1000).start();
-                mp5.setNumber(700,1000).start();
-                mp6.setNumber(800,1000).start();
+                mp.start();
+                mp2.start();
+                mp3.start();
+                mp4.start();
+                mp5.start();
+                mp6.start();
             }
         });
 
