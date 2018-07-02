@@ -1,7 +1,5 @@
 package com.lhf.test.movetextviewtest;
 
-import android.animation.Animator;
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.LinearGradient;
@@ -9,7 +7,6 @@ import android.graphics.Paint;
 import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.animation.LinearInterpolator;
 
 /**
  * com.lhf.test.movetextviewtest
@@ -26,9 +23,6 @@ public class MoneyProgress extends View {
 
     private int x = 0;
     private String text = "";
-    private ValueAnimator animator;
-//    private int durationTime = 1500;
-    private int durationTime = 0;
     private int textSize = 16;
     private int rectHeight = 28;
     private int viewWidth = 0;
@@ -81,47 +75,14 @@ public class MoneyProgress extends View {
         backgroundPaint.setAntiAlias(true);
         backgroundPaint.setTextSize(DimenUtil.dp2px(mContext, textSize));
 
-        animator = ValueAnimator.ofInt(1, 100);
-        animator.setDuration(durationTime);
-        animator.setInterpolator(new LinearInterpolator());//线性效果变化
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                Integer integer = (Integer) animator.getAnimatedValue();
 
-                //1到100需要转换下
+        //1到100需要转换下
 
 //                x = DimenUtil.dp2px(mContext, integer);
-                x = (int) ((float) integer * percentWidth);
-
-                fillPaint.setShader(new LinearGradient(0, 0, x, 0, startColor, endColor, Shader.TileMode.CLAMP));
-                text = String.valueOf(x);
-                invalidate();
-
-            }
-        });
-        animator.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                text = String.valueOf(showNumber);
-                invalidate();
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
-            }
-        });
+//                x = (int) ((float) 100 * percentWidth);
+//
+//                fillPaint.setShader(new LinearGradient(0, 0, x, 0, startColor, endColor, Shader.TileMode.CLAMP));
+//                text = String.valueOf(x);
 
 //        wordWidth = DimenUtil.dp2px(mContext, textSize);
         wordWidth = (int) backgroundPaint.measureText("第");
@@ -175,14 +136,14 @@ public class MoneyProgress extends View {
                 backgroundPaint);
 
         //方块
-        canvas.drawRect((float) (wordWidth * 2.6),
+        canvas.drawRect(wordWidth * 3,
                 0,
                 x + wordWidth * 3,
                 tempRectHeight, fillPaint);
 
         //日期
         canvas.drawText("" + time,
-                (float) (wordWidth * 2.6) + wordWidth / 5,
+                wordWidth * 3 + wordWidth / 3,
                 (tempRectHeight - wordH) / 2 + wordH,
                 backgroundPaint);
 
@@ -194,8 +155,9 @@ public class MoneyProgress extends View {
     }
 
     public void start() {
-        if (animator != null) {
-            animator.start();
-        }
+        x = (int) ((float) 100 * percentWidth);
+        fillPaint.setShader(new LinearGradient(0, 0, x, 0, startColor, endColor, Shader.TileMode.CLAMP));
+        text = String.valueOf(x);
+        invalidate();
     }
 }
