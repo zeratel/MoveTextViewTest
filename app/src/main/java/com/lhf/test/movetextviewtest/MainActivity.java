@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         mp3.setNumber(400,1000);
         mp4.setNumber(600,1000);
         mp5.setNumber(700,1000);
-        mp6.setNumber(800,1000);
+        mp6.setNumber(1000,1000);
 
         ((Button)findViewById(R.id.bt)).setOnClickListener(new View.OnClickListener() {
             @Override

@@ -22,14 +22,15 @@ public class MoneyProgress extends View {
     private Context mContext;
     private Paint fillPaint;
     private Paint backgroundPaint;
-    private int textColor = 0xffffffff;
+    private int textColor = 0xff000000;
 
     private int x = 0;
     private String text = "";
     private ValueAnimator animator;
-    private int durationTime = 1500;
-    private int textSize = 20;
-    private int rectHeight = 30;
+//    private int durationTime = 1500;
+    private int durationTime = 0;
+    private int textSize = 16;
+    private int rectHeight = 28;
     private int viewWidth = 0;
     private int viewHeight = 0;
     private float percentWidth = 0;
@@ -37,7 +38,12 @@ public class MoneyProgress extends View {
     private int startColor = 0xfffb3a24;
     private int endColor = 0xfffb6049;
     private int showNumber = 0;
-//    private int startColor = 0xff000000;
+    private String periods = "1";
+    private int wordWidth;
+    private int wordH;
+    private int tempRectHeight;
+    private String time = "2018-7-2";
+    //    private int startColor = 0xff000000;
 //    private int endColor = 0xffffffff;
 
     public MoneyProgress(Context context) {
@@ -117,6 +123,20 @@ public class MoneyProgress extends View {
             }
         });
 
+//        wordWidth = DimenUtil.dp2px(mContext, textSize);
+        wordWidth = (int) backgroundPaint.measureText("第");
+        wordH = (int) (-backgroundPaint.ascent());
+        tempRectHeight = DimenUtil.dp2px(mContext, rectHeight);
+    }
+
+    public MoneyProgress setPeriods(String periods) {
+        this.periods = periods;
+        return this;
+    }
+
+    public MoneyProgress setTime(String time) {
+        this.time = time;
+        return this;
     }
 
     public MoneyProgress setNumber(int number, int maxNumber) {
@@ -134,7 +154,7 @@ public class MoneyProgress extends View {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
 //        Log.i("LHF", "widthMeasureSpec:" + getMeasuredWidth() + ",heightMeasureSpec:" + getMeasuredHeight());
-        viewWidth = getMeasuredWidth();
+        viewWidth = (int) (getMeasuredWidth() - wordWidth * 6);
         viewHeight = getMeasuredHeight();
 
         //应该显示的宽度
@@ -143,12 +163,34 @@ public class MoneyProgress extends View {
         //每次应该显示的数量
         percentWidth = showWidth / (float) 100;
 
+        setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), DimenUtil.dp2px(mContext, rectHeight));
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawRect(0, 0, 1 + x, DimenUtil.dp2px(mContext, rectHeight), fillPaint);
-        canvas.drawText("￥" + text, x - (DimenUtil.dp2px(mContext, 15)) * (text.length() + 1), DimenUtil.dp2px(mContext, (rectHeight - textSize) / 4 + textSize), backgroundPaint);
+        //前
+        canvas.drawText("第" + periods + "期",
+                0,
+                (tempRectHeight - wordH) / 2 + wordH,
+                backgroundPaint);
+
+        //方块
+        canvas.drawRect((float) (wordWidth * 2.6),
+                0,
+                x + wordWidth * 3,
+                tempRectHeight, fillPaint);
+
+        //日期
+        canvas.drawText("" + time,
+                (float) (wordWidth * 2.6) + wordWidth / 5,
+                (tempRectHeight - wordH) / 2 + wordH,
+                backgroundPaint);
+
+        //后
+        canvas.drawText("" + showNumber,
+                x + wordWidth * 3 + wordWidth / 5,
+                (tempRectHeight - wordH) / 2 + wordH,
+                backgroundPaint);
     }
 
     public void start() {
